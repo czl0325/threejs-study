@@ -9,18 +9,23 @@ const camera = new THREE.PerspectiveCamera(75, window.innerWidth/window.innerHei
 camera.position.set(0, 0, 5)
 scene.add(camera)
 
-const renderer = new THREE.WebGLRenderer({ antialias: true })
+const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true })
 renderer.setSize(window.innerWidth, window.innerHeight)
 renderer.setPixelRatio(window.devicePixelRatio)
 document.body.append(renderer.domElement)
 
-const planeGeometry = new THREE.PlaneGeometry(5, 5)
-const planeMaterial = new THREE.ShaderMaterial({
+const loader = new THREE.TextureLoader();
+const texture = loader.load("./texture/flag.jpeg")
+const planeGeometry = new THREE.PlaneGeometry(5, 2.63, 64, 64)
+const planeMaterial = new THREE.RawShaderMaterial({
   vertexShader,
   fragmentShader,
   uniforms: {
     uTime: {
       value: 0.0
+    },
+    uTexture: {
+      value: texture
     }
   },
   side: THREE.DoubleSide
@@ -28,7 +33,10 @@ const planeMaterial = new THREE.ShaderMaterial({
 const plane = new THREE.Mesh(planeGeometry, planeMaterial)
 scene.add(plane)
 
-const control = new OrbitControls(plane, renderer.domElement)
+const control = new OrbitControls(camera, renderer.domElement)
+control.update()
+const axesHelper = new THREE.AxesHelper(5)
+scene.add(axesHelper)
 
 function render() {
   control.update()
@@ -37,3 +45,11 @@ function render() {
 }
 
 render()
+
+window.addEventListener("resize", () => {
+  renderer.setSize(window.innerWidth, window.innerHeight)
+  renderer.setPixelRatio(window.devicePixelRatio)
+  camera.aspect = window.innerWidth / window.innerHeight
+  camera.updateProjectionMatrix()
+  control.update()
+})
