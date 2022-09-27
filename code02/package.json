@@ -12,7 +12,12 @@
   "dependencies": {
     "three": "^0.144.0"
   },
+  "staticFiles": {
+    "staticPath": ["public", "src/assets/imgs"],
+    "watcherGlob": "**"
+  },
   "devDependencies": {
-    "parcel-bundler": "^1.12.5"
+    "parcel-bundler": "^1.12.5",
+    "parcel-plugin-static-files-copy": "^2.6.0"
   }
 }
