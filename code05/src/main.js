@@ -38,9 +38,11 @@ control.update()
 const axesHelper = new THREE.AxesHelper(5)
 scene.add(axesHelper)
 
+const clock = new THREE.Clock()
 function render() {
   control.update()
   renderer.render(scene, camera)
+  planeMaterial.uniforms.uTime.value = clock.getElapsedTime()
   requestAnimationFrame(render)
 }
 

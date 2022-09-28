@@ -7,9 +7,13 @@ uniform mat4 projectionMatrix;
 uniform mat4 viewMatrix;
 uniform mat4 modelMatrix;
 
+uniform float uTime;
+
 varying vec2 vUv;
 
 void main() {
     vUv = uv;
-    gl_Position = projectionMatrix * viewMatrix * modelMatrix * vec4( position, 1.0 );
+    vec4 modelPosition = modelMatrix * vec4( position, 1.0 );
+    modelPosition.z = sin((modelPosition.x + uTime) * 4.0) * 0.05;
+    gl_Position = projectionMatrix * viewMatrix * modelPosition;
 }
