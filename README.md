@@ -1,7 +1,6 @@
 # threejs-study
 我的threejs学习笔记
 
-
 #### code01
 [创建立方体和轨迹渲染器](./code01/README.md)
 
@@ -11,5 +10,5 @@
 #### code4
 [物理引擎cannon的简单使用](./code04/README.md)
 
-#### code4
+#### code5
 [shader实现飘扬的国旗](./code05/README.md)

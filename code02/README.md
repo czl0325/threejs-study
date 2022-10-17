@@ -1,6 +1,6 @@
 ### 鼠标拾取使立方体变色
 
-* 1. 在场景内随机生成2000个大小不一的立方体
+* 1.在场景内随机生成2000个大小不一的立方体
 ```javascript
 const geometry = new THREE.BoxGeometry(20, 20, 20)
 for (let i=0; i< 2000; i++) {
