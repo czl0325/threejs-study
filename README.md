@@ -12,3 +12,6 @@
 
 #### code5
 [shader实现飘扬的国旗](./code05/README.md)
+
+#### code6
+[加载背景图片的两张方法](./code06/README.md)

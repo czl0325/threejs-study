@@ -1,8 +1,7 @@
 import * as THREE from "three"
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js"
-import { RGBELoader } from "three/examples/jsm/loaders/RGBELoader.js"
 
-const div = document.getElementById("my3d")
+const div = document.getElementById("div_png")
 const scene = new THREE.Scene()
 
 const camera = new THREE.PerspectiveCamera(75, div.clientWidth/div.clientHeight, 1, 1000)
@@ -14,19 +13,23 @@ renderer.setSize(div.clientWidth, div.clientHeight)
 renderer.setPixelRatio(window.devicePixelRatio)
 div.append(renderer.domElement)
 
-const loader = new RGBELoader()
-loader.load("./texture/2k.hdr", (texture) => {
-  texture.mapping = THREE.EquirectangularReflectionMapping;
-  scene.background = texture
-  scene.environment = texture
-})
+const loader = new THREE.CubeTextureLoader()
+const texture = loader.load([
+  "./texture/1.jpg",
+  "./texture/2.jpg",
+  "./texture/3.jpg",
+  "./texture/4.jpg",
+  "./texture/5.jpg",
+  "./texture/6.jpg"
+])
+scene.background = texture
+scene.environment = texture
 
 const control = new OrbitControls(camera, renderer.domElement)
 control.update()
 const axesHelper = new THREE.AxesHelper(5)
 scene.add(axesHelper)
 
-const clock = new THREE.Clock()
 function render() {
   control.update()
   renderer.render(scene, camera)
@@ -34,11 +37,3 @@ function render() {
 }
 
 render()
-
-window.addEventListener("resize", () => {
-  renderer.setSize(window.innerWidth, window.innerHeight)
-  renderer.setPixelRatio(window.devicePixelRatio)
-  camera.aspect = window.innerWidth / window.innerHeight
-  camera.updateProjectionMatrix()
-  control.update()
-})
