@@ -27,8 +27,34 @@ import { onMounted } from "vue"
 
 onMounted(() => {
   const viewer = new Cesium.Viewer("cesiumContainer", {
-    infoBox: false,
+    infoBox: false,     // 是否显示信息框
+    geocoder: false,    // 隐藏搜索框
+    homeButton: false,  // 隐藏home按钮
+    sceneModePicker: false, // 隐藏3D/2D选择按钮
+    navigationHelpButton: false, // 隐藏帮助信息按钮
+    baseLayerPicker: false, // 隐藏图层选择按钮
+    timeline: false, // 隐藏时间线
+    animation: false, // 隐藏动画
+    fullscreenButton: false, // 隐藏全屏按钮
   })
   viewer.cesiumWidget.creditContainer.style.display = "none"
 })
 ```
+
+另外可以添加天空盒，需要传入6张图片
+```javascript  
+skyBox: new Cesium.SkyBox({
+  sources: {
+    positiveX: "./texture/sky/px.jpg",
+    negativeX: "./texture/sky/nx.jpg",
+    positiveY: "./texture/sky/ny.jpg",
+    negativeY: "./texture/sky/py.jpg",
+    positiveZ: "./texture/sky/pz.jpg",
+    negativeZ: "./texture/sky/nz.jpg",
+  },
+}),
+```
+
+自定义地图，可以去[天地图](http://lbs.tianditu.gov.cn/home.html)申请key，然后在cesium中添加
+
+地形图的加载，可以去[地理数据空间云](http://www.gscloud.cn)，数据资源->公开数据->DEM 数字高程数据->GDEMV2 30M 分辨率数字高程数据
