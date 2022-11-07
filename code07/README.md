@@ -57,4 +57,24 @@ skyBox: new Cesium.SkyBox({
 
 自定义地图，可以去[天地图](http://lbs.tianditu.gov.cn/home.html)申请key，然后在cesium中添加
 
-地形图的加载，可以去[地理数据空间云](http://www.gscloud.cn)，数据资源->公开数据->DEM 数字高程数据->GDEMV2 30M 分辨率数字高程数据
+地形图的加载，可以去[地理数据空间云](http://www.gscloud.cn)，数据资源->公开数据->DEM 数字高程数据
+里面搜索到自己想要的地形图，下载后加载(其中 《GDEMV2 30M 分辨率数字高程数据》里面的数据是可以直接加载的 )
+
+添加全球地图白模
+```javascript
+viewer.scene.primitives.add(new Cesium.createOsmBuildings())
+```
+
+鼠标拾取，找到点击的实体
+```javascript
+const handle = new Cesium.ScreenSpaceEventHandler(viewer.scene.canvas)
+  handle.setInputAction((movement: any) => {
+    const pickedObject = viewer.scene.pick(movement.position)
+    if (Cesium.defined(pickedObject)) {
+      const entity = pickedObject.id
+      if (entity instanceof Cesium.Entity) {
+        console.log(entity)
+      }
+    }
+  }, Cesium.ScreenSpaceEventType.LEFT_CLICK)
+```

@@ -14,15 +14,14 @@ onMounted(() => {
     timeline: false, // 隐藏时间线
     animation: false, // 隐藏动画
     fullscreenButton: false, // 隐藏全屏按钮
-//    terrainProvider: Cesium.createWorldTerrain(),
-    terrainProvider: Cesium.createWorldTerrain({
-      requestWaterMask: true,
-      requestVertexNormals: true
-    }),
+  })
+  viewer.terrainProvider = Cesium.createWorldTerrain({
+    requestWaterMask: true,
+    requestVertexNormals: true
   })
   viewer.cesiumWidget.creditContainer.style.display = "none"
 //  Cesium.Camera.DEFAULT_VIEW_RECTANGLE = Cesium.Rectangle.fromDegrees(20, 110, 28, 126)
-  var boundingSphere = new Cesium.BoundingSphere(Cesium.Cartesian3.fromDegrees(118.044584, 24.47918, 0), 0.0);
+  const boundingSphere = new Cesium.BoundingSphere(Cesium.Cartesian3.fromDegrees(118.044584, 24.47918, 0), 0.0);
   viewer.camera.flyToBoundingSphere(boundingSphere, {
     duration: 2,
     maximumHeight: undefined,
@@ -37,7 +36,24 @@ onMounted(() => {
       pitch: Cesium.Math.toRadians(-45),
       range: 5000
     },
-  });
+  })
+  viewer.imageryLayers.addImageryProvider(new Cesium.OpenStreetMapImageryProvider({
+    url : 'https://a.tile.openstreetmap.org/'
+  }))
+  // @ts-ignore
+  viewer.scene.primitives.add(new Cesium.createOsmBuildings())
+
+  const handle = new Cesium.ScreenSpaceEventHandler(viewer.scene.canvas)
+  handle.setInputAction((movement: any) => {
+    const pickedObject = viewer.scene.pick(movement.position)
+    console.log(pickedObject)
+    if (Cesium.defined(pickedObject)) {
+      const entity = pickedObject.id
+      if (entity instanceof Cesium.Entity) {
+        console.log(entity)
+      }
+    }
+  }, Cesium.ScreenSpaceEventType.LEFT_CLICK)
 })
 </script>
 
