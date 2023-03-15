@@ -3,6 +3,7 @@ import gsap from "gsap"
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader"
 import { DRACOLoader } from "three/examples/jsm/loaders/DRACOLoader"
 import MeshLine from "./MeshLine"
+import FlyLine from "./FlyLine"
 
 export default function createCity(scene: THREE.Scene) {
   const gltfLoader = new GLTFLoader()
@@ -42,6 +43,8 @@ export default function createCity(scene: THREE.Scene) {
       }
     })
     scene.add(gltf.scene)
+    const flyLine = new FlyLine()
+    scene.add(flyLine.lineMesh)
   })
 }
 
