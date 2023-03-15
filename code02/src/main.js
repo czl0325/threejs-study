@@ -58,7 +58,6 @@ function render() {
   raycaster.setFromCamera(mouse, camera)
   const intersects = raycaster.intersectObjects(scene.children)
   if (intersects.length > 0) {
-    console.log(intersects)
     const inObj = intersects[0].object
     if (inObj instanceof THREE.Mesh) {
       if (INTERSECTED !== inObj) {
