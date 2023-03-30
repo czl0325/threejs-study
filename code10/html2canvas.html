@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="renderer" content="webkit|ie-comp|ie-stand">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0,maximum-scale=1.0,user-scalable=no">
+  <title>html2canvas</title>
+  <link rel="stylesheet" href="../public/plugins/ys/ys.min.css">
+  <link rel="stylesheet" href="../public/css/ysThree/pageStyle.css">
+  <style>
+    .capture{
+      position: fixed;
+      width: 400px;
+      height: 400px;
+      color:red;
+      font-size: 50px;
+      line-height: 200px;
+      background-size: 100% 100%;
+      background: url("https://www.wellyyss.cn/ys-three/static/img/logo.b3ddc6ad.png") no-repeat center 50px;
+      background-size: auto 100%;
+      text-align: center;
+      font-weight: bold;
+      left:9999px;
+    }
+  </style>
+</head>
+<body>
+<div class="ys-absolute-container" id="box" style="overflow: hidden"></div>
+<div class="fix-btns">
+  <span class="ys-btn ys-btn-warm ys-btn-sm  tips-btn">小记</span>
+</div>
+<div class="tips-container ys-absolute-container">
+  <div class="ys-tit">标题</div>
+  <div class="ys-block"></div>
+</div>
+</body>
+<script src="../public/plugins/ys/ys.min.js"></script>
+<script src="../public/plugins/threeLibrary/three.min.js"></script>
+<script src="../public/plugins/threeLibrary/js/controls/OrbitControls.js"></script>
+<script src="../public/plugins/createJs/tween.min.js"></script>
+<script src="../public/plugins/threeLibrary/js/libs/stats.min.js"></script>
+<script src="../public/plugins/ysThree/ysThree-1.0.1.js"></script>
+<script src="../public/plugins/others/html2Canvas.min.js"></script>
+<script>
+  /**
+   * 可以使用html2canvas然后做成canvas材质 这样直接使用sprite插入场景中，相比较css2d，css2d性能消耗较少
+   * */
+  const el = document.getElementById('box')
+
+  const app = new YsThree(el,{
+    gridHelper:true,//网格参考线
+    axes:true,//坐标辅助
+    clearColor:'#000'//画布颜色
+  })
+
+  const camera = app.camera
+  const renderer = app.renderer
+  const scene = app.scene
+  const controls = app.initOrbitControls()
+  const clock = new THREE.Clock()
+  app.initStatus(Stats)
+
+
+  //add light
+  const directionalLight = new THREE.DirectionalLight( '#fff' )
+  directionalLight.position.set( 30, 30, 30 ).normalize()
+  scene.add( directionalLight )
+  const ambientLight = new THREE.AmbientLight('#fff',0.3) // obj 唯一 id
+  scene.add(ambientLight)
+  /*  **** **** ****   ****/
+
+  const group = new THREE.Group()
+  scene.add(group)
+
+  // 添加一个永远朝向照相机的sprite
+  app.addHtmlCanvas(html2canvas,{
+    element: `<div class='capture'> Hello world!</div>`,
+    type: 'sprite',
+    name: 'myTestSprite',
+    parent: group,
+    position: [10,5,10],
+    scale: [10,10,10]
+    // sizeAttenuation: false,
+  })
+  // 添加一个平面，
+  app.addHtmlCanvas(html2canvas,{
+    element: `<div class='capture'> Hello world!</div>`,
+    type: 'plane',
+    name: 'myTestSprite2',
+    parent: group,
+    position: [-10,5,-10],
+    scale: [0.1,0.1,0.1]
+    // sizeAttenuation: false,
+  })
+
+  // 如果是更新的话 就直接 移除掉这个myTestSprite2 然后 重新add....
+
+  /*  **** **** ****   ****/
+  function render() {
+    controls.update(clock.getDelta())
+    renderer.render( scene,camera)
+    // TWEEN.update()
+    app.staus.update()
+    requestAnimationFrame(render)
+  }
+  render()
+</script>
+</html>

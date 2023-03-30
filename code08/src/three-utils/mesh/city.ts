@@ -13,10 +13,14 @@ export default function createCity(scene: THREE.Scene) {
   dracoLoader.preload()
   gltfLoader.setDRACOLoader(dracoLoader)
   gltfLoader.load("/city.glb", (gltf) => {
-    gltf.scene.traverse((child) => {
+    gltf.scene.children.forEach((child) => {
       if (child instanceof THREE.Mesh) {
         child.castShadow = true
         child.receiveShadow = true
+      }
+    })
+    gltf.scene.traverse((child) => {
+      if (child instanceof THREE.Mesh) {
         const childMaterial = new THREE.MeshBasicMaterial({
           color: new THREE.Color(0x0c0e33),
         })
